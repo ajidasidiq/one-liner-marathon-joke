@@ -13,10 +13,17 @@ JOKE = (
     "- which is honestly the most accurate answer I've ever gotten."
 )
 
+MAX_CHARS = 280
+
 
 def main() -> None:
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8") as handle:
+    if not 1 <= len(JOKE) <= MAX_CHARS:
+        raise ValueError(f"joke must be 1-{MAX_CHARS} characters, got {len(JOKE)}")
+    if JOKE != JOKE.strip() or "\n" in JOKE:
+        raise ValueError("joke must be a single line with no leading/trailing space")
+    out_dir = os.environ.get("OUTPUT_DIR", "/output")
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as handle:
         handle.write(JOKE + "\n")
 
 
